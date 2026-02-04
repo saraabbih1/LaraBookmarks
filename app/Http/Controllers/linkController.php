@@ -26,10 +26,15 @@ class linkController extends Controller
         $request->validate([
             'title' => 'required',
             'url' => 'required|url',
-            'category_id' => 'required'
+            'category_id' => 'required',
+            'tags'=>'array'
+
         ]);
 
-        Link::create($request->all());
+       $link= Link::create($request->all());
+        if($request->has('tags')){
+            $link->tags()->attach($request->tags);
+        }
 
         return redirect()->route('links.index')
             ->with('success', 'Lien ajouté');
