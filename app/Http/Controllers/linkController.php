@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\Link;
+use App\Models\Tag;
+
 use App\Models\Category;
 
 
@@ -16,6 +18,7 @@ class linkController extends Controller
     }
     public function create(){
         $categories=Category::where('user_id',auth()->user->id())->get();
+        $tags=Tag::all();
         return view('links.create',compact('categories'));
     }
      public function store(Request $request)
