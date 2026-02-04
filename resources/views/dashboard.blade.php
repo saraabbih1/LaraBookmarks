@@ -1,17 +1,43 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
+@section('content')
+<div class="container mx-auto p-6">
+
+    <h1 class="text-2xl font-bold mb-6"> LaraBookmarks</h1>
+
+    @foreach($categories as $category)
+    <div class="border p-4 mb-4">
+
+        <h3>{{ $category->name }}</h3>
+
+        {{-- Ajouter link --}}
+        <form method="POST" action="{{ route('links.store') }}">
+            @csrf
+            <input type="hidden" name="category_id" value="{{ $category->id }}">
+
+            <input type="text" name="title" placeholder="Titre">
+            <input type="text" name="url" placeholder="URL">
+
+            <button type="submit">➕ Ajouter</button>
+        </form>
+
+        {{-- Liste des links --}}
+        <ul>
+            @foreach($category->links as $link)
+                <li>
+                    <a href="{{ $link->url }}" target="_blank">
+                        {{ $link->title }}
+                    </a>
+
+                    {{-- Supprimer --}}
+                    <form method="POST" action="{{ route('links.destroy', $link->id) }}" style="display:inline">
+                        @csrf
+                        @method('DELETE')
+                        <button>❌</button>
+                    </form>
+                </li>
+            @endforeach
+        </ul>
+
     </div>
-</x-app-layout>
+@endforeach

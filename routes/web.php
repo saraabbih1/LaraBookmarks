@@ -3,6 +3,7 @@ use App\Http\Controllers\LinkController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,8 +23,10 @@ Route::middleware(['auth', 'check.status'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::middleware('auth')->group(function () {
-    Route::resource('categories',  Categorycontroller::class);
-     Route::resource('links', linkController::class);
+    Route::resource('categories', CategoryController::class);
+Route::resource('links', LinkController::class);
+ Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
 });
 
 require __DIR__.'/auth.php';

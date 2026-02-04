@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Category;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -13,7 +13,7 @@ class CategoryController extends Controller
     public function index()
     {
         
-        $categories=Category::where('user_id',auth()->user->id())->get();
+        $categories=Category::where('user_id',auth()->id())->get();
             return view('categories.index', compact('categories'));
     }
 
@@ -36,7 +36,7 @@ class CategoryController extends Controller
 
     Category::create([
         'name' => $request->name,
-        'user_id' => auth()->user->id()
+        'user_id' => auth()->user()->id
     ]);
 
     return back()->with('success', 'Catégorie ajoutée');
