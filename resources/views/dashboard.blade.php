@@ -3,7 +3,7 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-6 py-8 bg-stone-100 min-h-screen">
 
-    {{-- HEADER --}}
+   
     <div class="flex flex-col lg:flex-row justify-between gap-4 items-center mb-10
                 bg-gradient-to-r from-amber-700 to-amber-500
                 text-white rounded-2xl p-6 shadow-lg">
@@ -46,7 +46,7 @@
         </form>
     </div>
 
-    {{-- SUCCESS --}}
+   
     @if(session('success'))
         <div class="mb-8 bg-green-100 border border-green-300 text-green-800
                     px-5 py-3 rounded-xl shadow">
@@ -54,13 +54,13 @@
         </div>
     @endif
 
-    {{-- CATEGORIES GRID --}}
+   
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
 
         @foreach($categories as $category)
         <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition">
 
-            {{-- CATEGORY TITLE --}}
+         
             <div class="flex justify-between items-center mb-5">
                 <h2 class="text-2xl font-bold text-indigo-600">
                     {{ $category->name }}
@@ -70,7 +70,7 @@
                 </span>
             </div>
 
-            {{-- ADD LINK --}}
+        
             <form method="POST" action="{{ route('links.store') }}"
                   class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
                 @csrf
@@ -90,7 +90,7 @@
                 </button>
             </form>
 
-            {{-- LINKS --}}
+          
             @if($category->links->count())
                 <ul class="space-y-3">
                     @foreach($category->links as $link)
@@ -99,7 +99,7 @@
 
                         <a href="{{ $link->url }}" target="_blank"
                            class="text-zinc-700 font-medium hover:text-amber-700 truncate">
-                            🔗 {{ $link->title }}
+                             {{ $link->title }}
                         </a>
 
                         <form method="POST" action="{{ route('links.destroy', $link->id) }}">
@@ -123,7 +123,7 @@
 
     </div>
 
-    {{-- FOOTER --}}
+  
     <div class="mt-16 text-center text-zinc-400 text-sm">
         LaraBookmarks © 2026 – Built with  & Laravel
     </div>

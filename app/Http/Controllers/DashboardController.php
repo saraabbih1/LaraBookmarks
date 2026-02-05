@@ -8,9 +8,13 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::with('links')
+        $categories = Category::with([ 'links'=>function($query)use ($request){
+            if($request->q){
+                $query->where('title','like','%'.$request->q.'%');
+            }
+        }])
             ->where('user_id', auth()->id())
             ->get();
 
