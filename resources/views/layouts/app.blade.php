@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gray-50 font-sans">
     <header class="bg-white shadow p-4 mb-6">
-        <h1 class="text-xl font-bold">LaraBookmarks</h1>
+        <h1 class="text-xl font-bold  text-indigo-600">LaraBookmarks</h1>
     </header>
 
     <main class="px-4">

@@ -4,8 +4,8 @@
 <div class="container mx-auto p-6">
 
     
-    <div class="flex justify-between items-center mb-6 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl p-4 shadow">
-        <h1 class="text-2xl font-bold flex items-center gap-2"> LaraBookmarks Dashboard</h1>
+<div class=" flex justify-between items-center mb-6 bg-gradient-to-r from-amber-600 to-amber-400 text-white rounded-xl p-4 shadow">
+        <h1 class=" text-2xl font-bold flex items-center gap-2 "> LaraBookmarks Dashboard</h1>
 
         {{-- Filtrage --}}
         <form method="GET" action="{{ route('dashboard') }}" class="flex gap-2 items-center">
@@ -61,7 +61,7 @@
                     <input type="url" name="url" placeholder="URL"
                            class="border rounded px-2 py-1 flex-1 focus:ring-2 focus:ring-indigo-300" required>
 
-                    <button class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-1 rounded shadow transition">
+                    <button class="bg-amber-100 text-amber-800 px-3 py-1 rounded hover:bg-amber-200 transition">
                         + Ajouter
                     </button>
                 </form>
