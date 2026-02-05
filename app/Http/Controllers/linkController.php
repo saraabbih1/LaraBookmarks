@@ -1,43 +1,102 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Models\Link;
 use App\Models\Tag;
-
 use App\Models\Category;
-
-
 use Illuminate\Http\Request;
 
-class linkController extends Controller
+class LinkController extends Controller
 {
-    public function index(){
-        $links = Link::wherehas('category',function($q){
-            $q->where('user_id',auth()->user()->id);
-        })->get();
-        return view('links.index',compact('links'));
+    /**
+     * Afficher tous les liens avec filtres et recherche
+     */
+    public function index(Request $request)
+    {
+        $query = Link::query();
+
+        // Limiter aux links de l'utilisateur connecté
+        $query->whereHas('category', function($q){
+            $q->where('user_id', auth()->id());
+        });
+
+        // Filtrage par catégorie
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Filtrage par tag
+        if ($request->filled('tag_id')) {
+            $query->whereHas('tags', function($q) use ($request) {
+                $q->where('tags.id', $request->tag_id);
+            });
+        }
+
+        // Recherche par titre
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        $links = $query->get();
+        $categories = Category::where('user_id', auth()->id())->get();
+        $tags = Tag::all();
+
+        return view('links.index', compact('links','categories','tags'));
     }
-    public function create(){
-        $categories=Category::where('user_id',auth()->user->id())->get();
-        $tags=Tag::all();
-        return view('links.create',compact('categories'));
+
+    /**
+     * Afficher le formulaire pour créer un lien
+     */
+    public function create()
+    {
+        $categories = Category::where('user_id', auth()->id())->get();
+        $tags = Tag::all();
+
+        return view('links.create', compact('categories','tags'));
     }
-     public function store(Request $request)
+
+    /**
+     * Stocker un nouveau lien
+     */
+    public function store(Request $request)
     {
         $request->validate([
             'title' => 'required',
             'url' => 'required|url',
             'category_id' => 'required',
-            'tags'=>'array'
-
+            'tags' => 'array'
         ]);
 
-       $link= Link::create($request->all());
-        if($request->has('tags')){
+        $link = Link::create([
+            'title' => $request->title,
+            'url' => $request->url,
+            'category_id' => $request->category_id
+        ]);
+
+        if($request->has('tags')) {
             $link->tags()->attach($request->tags);
         }
 
         return redirect()->route('links.index')
-            ->with('success', 'Lien ajouté');
+                         ->with('success', 'Lien ajouté avec succès !');
     }
 
+    /**
+     * Supprimer un lien
+     */
+    public function destroy($id)
+    {
+        $link = Link::findOrFail($id);
+
+        // Sécurisation : un utilisateur ne peut supprimer que ses propres liens
+        if ($link->category->user_id !== auth()->id()) {
+            abort(403, 'Accès refusé');
+        }
+
+        $link->tags()->detach(); // détacher les tags liés
+        $link->delete();
+
+        return back()->with('success', 'Lien supprimé avec succès !');
+    }
 }
