@@ -9,9 +9,7 @@ use Illuminate\Http\Request;
 
 class LinkController extends Controller
 {
-    /**
-     * Afficher tous les liens avec filtres et recherche
-     */
+    
     public function index(Request $request)
     {
         $query = Link::query();
