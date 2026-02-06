@@ -11,6 +11,21 @@
         <h1 class="text-3xl font-extrabold tracking-wide">
              LaraBookmarks
         </h1>
+<div class="flex gap-3">
+    <!-- ADD CATEGORY -->
+    <a href="{{ route('categories.create') }}"
+       class="bg-indigo-600 hover:bg-indigo-500 text-white
+              px-4 py-2 rounded-lg shadow font-semibold">
+        + Catégorie
+    </a>
+
+    <!-- ADD TAG -->
+    <a href="{{ route('tags.create') }}"
+       class="bg-emerald-600 hover:bg-emerald-500 text-white
+              px-4 py-2 rounded-lg shadow font-semibold">
+        + Tag
+    </a>
+</div>
 
         {{-- FILTER --}}
         <form method="GET" action="{{ route('dashboard') }}"

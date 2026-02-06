@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\DashboardController;
-
+use App\Http\Controllers\TagController;
 
 Route::get('/', function () {
     header('Location: /login');
@@ -27,6 +27,7 @@ Route::middleware(['auth', 'check.status'])->group(function () {
     // Categories & Links
     Route::resource('categories', CategoryController::class);
     Route::resource('links', LinkController::class);
+    Route::resource('tags',TagController::class);
 });
 
 
