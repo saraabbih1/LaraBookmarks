@@ -39,8 +39,8 @@ class CategoryController extends Controller
         'user_id' => auth()->user()->id
     ]);
 
-    return back()->with('success', 'Catégorie ajoutée');
-    }
+return redirect()->route('dashboard')
+           ->with('success', 'Catégorie ajoutée avec succès');    }
 
     /**
      * Display the specified resource.
@@ -69,8 +69,16 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        //
+ if ($category->user_id !== auth()->id()) {
+        abort(403);
+    }  
+         $category->links()->delete();
+            $category->delete();
+             return redirect()->route('dashboard')
+        ->with('success', 'Catégorie supprimée avec succès');
     }
+
+
 }

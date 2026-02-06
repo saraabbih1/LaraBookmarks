@@ -87,12 +87,11 @@ class LinkController extends Controller
     {
         $link = Link::findOrFail($id);
 
-        // Sécurisation : un utilisateur ne peut supprimer que ses propres liens
         if ($link->category->user_id !== auth()->id()) {
             abort(403, 'Accès refusé');
         }
 
-        $link->tags()->detach(); // détacher les tags liés
+        $link->tags()->detach(); 
         $link->delete();
 
         return back()->with('success', 'Lien supprimé avec succès !');

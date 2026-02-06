@@ -8,18 +8,25 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request)
-    {
-        $categories = Category::with([ 'links'=>function($query)use ($request){
-            if($request->q){
-                $query->where('title','like','%'.$request->q.'%');
+  public function index(Request $request)
+{
+    $categoriesQuery = Category::where('user_id', auth()->id())
+        ->with(['links' => function ($query) use ($request) {
+            if ($request->filled('tag')) {
+                $query->whereHas('tags', function ($q) use ($request) {
+                    $q->where('tags.id', $request->tag);
+                });
             }
-        }])
-            ->where('user_id', auth()->id())
-            ->get();
+        }]);
 
-        $tags = Tag::all();
-
-        return view('dashboard', compact('categories', 'tags')); // <-- ici
+    if ($request->filled('category')) {
+        $categoriesQuery->where('id', $request->category);
     }
+
+    $categories = $categoriesQuery->get();
+
+    $tags = Tag::all();
+
+    return view('dashboard', compact('categories', 'tags'));
+}
 }

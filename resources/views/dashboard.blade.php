@@ -76,14 +76,23 @@
         <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition">
 
          
-            <div class="flex justify-between items-center mb-5">
-                <h2 class="text-2xl font-bold text-indigo-600">
-                    {{ $category->name }}
-                </h2>
-                <span class="text-sm text-zinc-400">
-                    {{ $category->links->count() }} liens
-                </span>
-            </div>
+           <div class="flex justify-between items-center mb-5">
+    <h2 class="text-2xl font-bold text-indigo-600">
+        {{ $category->name }}
+    </h2>
+
+    <form method="POST"
+          action="{{ route('categories.destroy', $category->id) }}"
+          onsubmit="return confirm('wach mtaakd bghiti tmssh catégorie ?')">
+        @csrf
+        @method('DELETE')
+
+        <button class="text-red-500 hover:text-red-700 text-sm font-semibold">
+            Supprimer
+        </button>
+    </form>
+</div>
+
 
         
             <form method="POST" action="{{ route('links.store') }}"
