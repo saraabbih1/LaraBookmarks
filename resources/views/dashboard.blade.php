@@ -98,6 +98,15 @@
                 <input type="url" name="url" placeholder="URL"
                        class="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400"
                        required>
+                       <div class="col-span-3 flex flex-wrap gap-2">
+    @foreach($tags as $tag)
+        <label class="flex items-center gap-1 text-sm">
+            <input type="checkbox" name="tags[]" value="{{ $tag->id }}">
+            {{ $tag->name }}
+        </label>
+    @endforeach
+</div>
+
 
                 <button class="bg-amber-100 hover:bg-amber-200 text-amber-800
                                rounded-lg font-semibold">
@@ -116,12 +125,19 @@
                            class="text-zinc-700 font-medium hover:text-amber-700 truncate">
                              {{ $link->title }}
                         </a>
+        <div class="flex gap-1 flex-wrap mt-1">
+    @foreach($link->tags as $tag)
+        <span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full">
+            #{{ $tag->name }}
+        </span>
+    @endforeach
+</div>
 
                         <form method="POST" action="{{ route('links.destroy', $link->id) }}">
                             @csrf
                             @method('DELETE')
                             <button class="text-red-500 hover:text-red-700">
-                                
+                                supprimer
                             </button>
                         </form>
                     </li>

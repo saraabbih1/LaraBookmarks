@@ -24,10 +24,11 @@ Route::middleware(['auth', 'check.status'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Categories & Links
+    // Categories & Links 
     Route::resource('categories', CategoryController::class);
     Route::resource('links', LinkController::class);
     Route::resource('tags',TagController::class);
+
 });
 
 
