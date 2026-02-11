@@ -46,4 +46,11 @@ class User extends Authenticatable
     public function hasRole($role){
         return $this->roles()->where('name',$role)->exists();
     }
+    public function sharedLinks()
+{
+    return $this->belongsToMany(Link::class)
+                ->withPivot('permission')
+                ->withTimestamps();
+}
+
 }
