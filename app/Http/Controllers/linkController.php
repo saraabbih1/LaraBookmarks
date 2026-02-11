@@ -6,6 +6,7 @@ use App\Models\Link;
 use App\Models\Tag;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use app\Http\Controllers;
 
 class LinkController extends Controller
 {
@@ -69,7 +70,8 @@ class LinkController extends Controller
         $link = Link::create([
             'title' => $request->title,
             'url' => $request->url,
-            'category_id' => $request->category_id
+            'category_id' => $request->category_id,
+            'user_id'=>auth()->id(),
         ]);
 
         if($request->has('tags')) {
@@ -79,6 +81,7 @@ class LinkController extends Controller
         return redirect()->route('links.index')
                          ->with('success', 'Lien ajouté avec succès !');
     }
+    
 
     /**
      * Supprimer un lien
