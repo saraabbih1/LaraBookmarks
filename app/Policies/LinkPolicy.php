@@ -4,70 +4,60 @@ namespace App\Policies;
 
 use App\Models\Link;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class LinkPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
+    
     public function viewAny(User $user): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Link $link): bool
     {
         return true;
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
+  
+    public function view(User $user, Link $link): bool
+    {
+       
+        if ($link->user_id === $user->id) {
+            return true;
+        }
+
+        return $link->users()
+            ->where('user_id', $user->id)
+            ->exists();
+    }
+
     public function create(User $user): bool
     {
-        return false;
+        return $user->hasRole('admin') || $user->hasRole('editor');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, Link $link): bool
     {
-        if ($user->hasRole('admin')){
-             return true;
+        if ($user->hasRole('admin')) {
+            return true;
         }
-        if($user->hasRole('editor')){
-            return $link->user_id ===$user->id;
+
+       
+        if ($link->user_id === $user->id) {
+            return true;
         }
-        return false;
-        
+
+      
+        return $link->users()
+            ->where('user_id', $user->id)
+            ->wherePivot('permission', 'edit')
+            ->exists();
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete(User $user, Link $link): bool
     {
-         return $this->update($user, $link);
+        return $this->update($user, $link);
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Link $link): bool
+   
+    
+    public function share(User $user, Link $link): bool
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Link $link): bool
-    {
-        return false;
+        return $user->hasRole('admin') || $link->user_id === $user->id;
     }
 }

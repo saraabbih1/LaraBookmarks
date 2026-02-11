@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Link;
+
 use App\Models\Tag;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use app\Http\Controllers;
+use App\Models\Link;
+use App\Policies\LinkPolicy;
 
 class LinkController extends Controller
 {
@@ -81,24 +82,24 @@ class LinkController extends Controller
         return redirect()->route('links.index')
                          ->with('success', 'Lien ajouté avec succès !');
     }
-    public function update(link $link){
-        $this->authorize('update',$link);
+  
+
+public function update(Link $link)
+{
+    $this->authorize('update', $link);
     }
 
     /**
      * Supprimer un lien
      */
-    public function destroy($id)
-    {
-        $link = Link::findOrFail($id);
+    public function destroy(Link $link)
+{
+    $this->authorize('delete', $link);
 
-        if ($link->category->user_id !== auth()->id()) {
-            abort(403, 'Accès refusé');
-        }
+    $link->tags()->detach();
+    $link->delete();
 
-        $link->tags()->detach(); 
-        $link->delete();
+    return back()->with('success', 'Lien supprimé avec succès !');
+}
 
-        return back()->with('success', 'Lien supprimé avec succès !');
-    }
 }

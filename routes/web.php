@@ -28,6 +28,9 @@ Route::middleware(['auth', 'check.status'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('links', LinkController::class);
     Route::resource('tags',TagController::class);
+    Route::delete('/links/{link}', [LinkController::class, 'destroy']);
+    Route::resource('links', LinkController::class);
+
 
 });
 
