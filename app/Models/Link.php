@@ -13,4 +13,11 @@ class Link extends Model
     public function tags(){
         return $this->belongsToMany(Tag::class);
     }
+    public function users()
+{
+    return $this->belongsToMany(User::class)
+                ->withPivot('permission')
+                ->withTimestamps();
+}
+
 }

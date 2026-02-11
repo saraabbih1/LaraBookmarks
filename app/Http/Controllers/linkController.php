@@ -81,7 +81,9 @@ class LinkController extends Controller
         return redirect()->route('links.index')
                          ->with('success', 'Lien ajouté avec succès !');
     }
-    
+    public function update(link $link){
+        $this->authorize('update',$link);
+    }
 
     /**
      * Supprimer un lien
