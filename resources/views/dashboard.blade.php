@@ -28,6 +28,7 @@
 </div>
 
         {{-- FILTER --}}
+        <x-validation-errors />
         <form method="GET" action="{{ route('dashboard') }}"
               class="flex gap-3 items-center bg-white/20 p-3 rounded-xl backdrop-blur">
 
@@ -53,6 +54,7 @@
         </form>
 
         {{-- LOGOUT --}}
+        <x-validation-errors />
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button class="bg-red-500 hover:bg-red-600 px-5 py-2 rounded-lg shadow">
@@ -80,7 +82,7 @@
     <h2 class="text-2xl font-bold text-indigo-600">
         {{ $category->name }}
     </h2>
-
+<x-validation-errors />
     <form method="POST"
           action="{{ route('categories.destroy', $category->id) }}"
           onsubmit="return confirm('wach mtaakd bghiti tmssh catégorie ?')">
@@ -94,7 +96,7 @@
 </div>
 
 
-        
+        <x-validation-errors />
             <form method="POST" action="{{ route('links.store') }}"
                   class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
                 @csrf
@@ -141,7 +143,7 @@
         </span>
     @endforeach
 </div>
-
+                        <x-validation-errors />
                         <form method="POST" action="{{ route('links.destroy', $link->id) }}">
                             @csrf
                             @method('DELETE')

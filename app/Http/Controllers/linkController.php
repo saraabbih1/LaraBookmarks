@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Link;
 use App\Policies\LinkPolicy;
 use App\Events\LinkActionEvent;
+use App\Http\Requests\StoreLinkRequest;
 
 
 
@@ -62,31 +63,21 @@ class LinkController extends Controller
     /**
      * Stocker un nouveau lien
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required',
-            'url' => 'required|url',
-            'category_id' => 'required',
-            'tags' => 'array'
-        ]);
+    public function store(StoreLinkRequest $request)
+{
+    $link = Link::create([
+        'title' => $request->title,
+        'url' => $request->url,
+        'category_id' => $request->category_id,
+        'user_id' => auth()->id(),
+    ]);
 
-        $link = Link::create([
-            'title' => $request->title,
-            'url' => $request->url,
-            'category_id' => $request->category_id,
-            'user_id'=>auth()->id(),
-        ]);
-
-        if($request->has('tags')) {
-            $link->tags()->attach($request->tags);
-        }
-
-        return redirect()->route('links.index')
-                         ->with('success', 'Lien ajouté avec succès !');
-                         event(new LinkActionEvent('create', $link));
-
+    if ($request->tags) {
+        $link->tags()->attach($request->tags);
     }
+
+    return back()->with('success', 'Lien ajouté avec succès');
+}
   
 
 public function update(Link $link)

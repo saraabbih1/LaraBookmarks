@@ -1,3 +1,4 @@
+<x-validation-errors />
 <form method="POST" action="{{ route('links.store') }}">
     @csrf
 
