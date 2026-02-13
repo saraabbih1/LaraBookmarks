@@ -30,6 +30,7 @@ Route::middleware(['auth', 'check.status'])->group(function () {
     Route::resource('tags',TagController::class);
     Route::delete('/links/{link}', [LinkController::class, 'destroy']);
     Route::resource('links', LinkController::class);
+    Route::post('/links/{id}/restore', [LinkController::class, 'restore'])->name('links.restore')->middleware('auth');
 
 
 });

@@ -8,6 +8,9 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Link;
 use App\Policies\LinkPolicy;
+use App\Events\LinkActionEvent;
+
+
 
 class LinkController extends Controller
 {
@@ -81,6 +84,8 @@ class LinkController extends Controller
 
         return redirect()->route('links.index')
                          ->with('success', 'Lien ajouté avec succès !');
+                         event(new LinkActionEvent('create', $link));
+
     }
   
 
@@ -100,6 +105,24 @@ public function update(Link $link)
     $link->delete();
 
     return back()->with('success', 'Lien supprimé avec succès !');
+    event(new LinkActionEvent('delete', $link));
+
+}
+
+public function restore($id)
+{
+    $link = Link::withTrashed()->find($id);
+
+    if(!$link) {
+        return back()->with('error', 'Lien non trouvé');
+    }
+
+    if(auth()->id() !== $link->user_id && !auth()->user()->hasRole('admin')) {
+        abort(403, 'Accès refusé');
+    }
+    $link->restore();
+
+    return back()->with('success', 'Lien restauré avec succès !');
 }
 
 }

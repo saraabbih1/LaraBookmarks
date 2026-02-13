@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('link_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->enum('permission',['read','edit'])->default('read');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
