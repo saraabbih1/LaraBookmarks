@@ -136,6 +136,13 @@
                            class="text-zinc-700 font-medium hover:text-amber-700 truncate">
                              {{ $link->title }}
                         </a>
+                        <form method="POST" action="{{ route('links.favorite', $link) }}">
+    @csrf
+    <button>
+        favorite
+    </button>
+</form>
+
         <div class="flex gap-1 flex-wrap mt-1">
     @foreach($link->tags as $tag)
         <span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full">

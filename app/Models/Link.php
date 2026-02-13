@@ -20,4 +20,9 @@ class Link extends Model
                 ->withTimestamps();
 }
  use SoftDeletes;
+ public function favoritedBy()
+{
+    return $this->belongsToMany(User::class, 'favorites');
+}
+
 }

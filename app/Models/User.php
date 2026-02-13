@@ -52,5 +52,9 @@ class User extends Authenticatable
                 ->withPivot('permission')
                 ->withTimestamps();
 }
+public function favorites()
+{
+    return $this->belongsToMany(Link::class, 'favorites');
+}
 
 }
