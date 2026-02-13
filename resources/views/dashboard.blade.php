@@ -141,6 +141,13 @@
     <button>
         favorite
     </button>
+    <div class="mb-4">
+    <a href="{{ route('links.favorites') }}"
+       class="px-4 py-2 bg-yellow-400 rounded">
+         Mes favoris
+    </a>
+</div>
+
 </form>
 
         <div class="flex gap-1 flex-wrap mt-1">

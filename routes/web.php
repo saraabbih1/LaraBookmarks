@@ -31,6 +31,8 @@ Route::middleware(['auth', 'check.status'])->group(function () {
     Route::delete('/links/{link}', [LinkController::class, 'destroy']);
     Route::resource('links', LinkController::class);
     Route::post('/links/{id}/restore', [LinkController::class, 'restore'])->name('links.restore')->middleware('auth');
+Route::post('/links/{link}/favorite', [LinkController::class, 'favorite'])
+    ->name('links.favorite');
 
 
 });

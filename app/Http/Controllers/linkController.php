@@ -115,5 +115,11 @@ public function restore($id)
 
     return back()->with('success', 'Lien restauré avec succès !');
 }
+public function favorite(Link $link)
+{
+    auth()->user()->favorites()->toggle($link->id);
+    return back();
+}
+
 
 }
